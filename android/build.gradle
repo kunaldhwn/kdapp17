@@ -1,18 +1,53 @@
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+android {
+    namespace = "com.example.kdapp17" // Make sure this matches your app's namespace
+    
+    // This explicitly sets the compile SDK for Android 15
+    compileSdk = 35
+
+    ndkVersion = flutter.ndkVersion
+
+    compileOptions {
+        // Modern AGP requires Java 17
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        // Modern Kotlin requires JVM target 17
+        jvmTarget = '17'
+    }
+
+    defaultConfig {
+        applicationId = "com.example.kdapp17" // Make sure this matches your app's ID
+        
+        // Let Flutter handle this, but you can override if needed
+        minSdk = flutter.minSdkVersion
+        
+        // This sets the target SDK for Android 15
+        targetSdk = 35
+        
+        versionCode = flutter.versionCode
+        versionName = flutter.versionName
+    }
+
+    buildTypes {
+        release {
+            // Your signing configuration for release builds
+            signingConfig = signingConfigs.debug
+        }
     }
 }
 
-rootProject.buildDir = "../build"
-subprojects {
-    project.buildDir = "${rootProject.buildDir}/${project.name}"
-}
-subprojects {
-    project.evaluationDependsOn(":app")
+flutter {
+    source = "../.."
 }
 
-tasks.register("clean", Delete) {
-    delete rootProject.buildDir
+dependencies {
+    // You can add other Android-specific dependencies here
 }
